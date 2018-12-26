@@ -5,9 +5,10 @@
 #define N 10
 void main()
 {
-    int n, x, c = 0, m = 9, t = 1;
+    int n, x, x1, c = 0, m = 9, t = 1;
     int i, j, k = 1, c1 = 0, b1 = 0;
-    int a[N], b[N], d[N];
+    int a[N] = { 0 }, b[N], d[N] = { 0 };
+    int check1, check2;
     setlocale(LC_ALL, "Rus");
     srand((unsigned int)time(0));
     printf("Игра 'Быки и коровы'\n");
@@ -21,13 +22,8 @@ void main()
     for (i = 0; i < n; i++)
     {
         a[i] = (m - c) / RAND_MAX * rand() + c;
-        while (a[0] == 0)
-        {
-            if (a[0] = 0)
-                a[0] = (m - 1) / RAND_MAX * rand() + 1;
-            else
-                break;
-        }
+        if (a[0] = 0)
+            a[0] = (m - 1) / RAND_MAX * rand() + 1;
         b[0] = a[0];
         for (i = 1; i < n; i++)
         {
@@ -48,10 +44,27 @@ void main()
             }
         }
     }
-    while (b1 != n)
+    do
     {
-        printf("Попробуйте отгадать: \n");
-        scanf("%d", &x);
+        printf("Попробуйте отгадать (цифры в числе не должны повторяться): \n");
+        do
+        {
+            scanf("%d", &x);
+            x1 = x;
+            for (i = 0; i < n; i++)
+                d[i] = 0;
+            check1 = 0;
+            while (x1 != 0) //проверка на длину
+            {
+                d[x1 % 10]++;
+                x1 /= 10;
+                check1++;
+            }
+            check2 = 0;
+            for (i = 0; i < 10; i++) //проверка на неповторяемость
+                if (d[i] > 1)
+                    check2++;
+        } while ((check1 != n) || (check2 != 0));
         for (t = 0; t < n; t++)
         {
             d[n - t] = x % 10;
@@ -73,10 +86,6 @@ void main()
         }
         printf("Количесво коров: %d \n", c1);
         printf("Количесво быков: %d \n", b1);
-        if ((c1 == 0) && (b1 = n))
-        {
-            printf("Вы угадали \n");
-            break;
-        }
-    }
+    } while ((c1 != n) || (b1 != n));
+    printf("Вы угадали \n");
 }
